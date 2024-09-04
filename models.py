@@ -1,6 +1,16 @@
-import sqlalchemy
+import os
 from sqlalchemy.orm import declarative_base, relationship, backref, sessionmaker
 from sqlalchemy import Column, Integer, String, ForeignKey, create_engine
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
+DB_NAME = os.getenv('DB_NAME')
 
 Base = declarative_base()
 
@@ -44,6 +54,6 @@ def create_tables(engine):
     Base.metadata.create_all(engine)
 
 if __name__ == '__main__':
-    DSN = 'postgresql://username:password@localhost:5432/database_name'
+    DSN = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     engine = create_engine(DSN)
     create_tables(engine)
